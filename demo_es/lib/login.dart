@@ -1,6 +1,6 @@
 import 'package:demo_es/home.dart';
 import 'package:flutter/material.dart';
-
+import 'package:demo_es/register.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -73,7 +73,12 @@ class LoginScreen extends StatelessWidget {
               const SizedBox(height: 20),
               TextButton(
                 onPressed: () {
-                  // Ação de registrar
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const RegisterScreen(),
+                    ),
+                  );
                 },
                 child: const Text(
                   'Não tem uma conta? Cadastre-se',
