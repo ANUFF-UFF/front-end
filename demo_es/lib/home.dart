@@ -1,3 +1,4 @@
+import 'package:demo_es/advertiserPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
@@ -74,6 +75,7 @@ class _AnuncioState extends State<Anuncio> {
   {'titulo': 'Celular', 'imagem': 'images/celular.png', 'autor': 'Arthur', 'descricao': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eleifend dolor quis mattis pharetra. Nulla feugiat dui vitae ligula porta mattis. Curabitur quis venenatis lectus. Aliquam et auctor odio, vel aliquet justo. Nulla ipsum mi, mollis vitae lacus nec, blandit congue urna. Maecenas tristique sem vel arcu vestibulum, quis efficitur diam sodales. Vestibulum in elementum tellus. Vestibulum rhoncus nibh vel risus aliquet faucibus. Sed at ex eget ipsum placerat commodo. Quisque pulvinar erat sagittis enim egestas sollicitudin. Proin nisi ipsum, scelerisque eu ornare sit amet, efficitur eu dolor. Donec sapien diam, congue nec luctus ut, condimentum at lacus. Cras eget rhoncus nibh. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum facilisis ornare facilisis. Integer et mollis nunc, id fermentum nisi.'},
   {'titulo': 'Aulas de Física', 'imagem': 'images/fisica.png', 'autor': 'Andre', 'descricao': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eleifend dolor quis mattis pharetra. Nulla feugiat dui vitae ligula porta mattis. Curabitur quis venenatis lectus. Aliquam et auctor odio, vel aliquet justo. Nulla ipsum mi, mollis vitae lacus nec, blandit congue urna. Maecenas tristique sem vel arcu vestibulum, quis efficitur diam sodales. Vestibulum in elementum tellus. Vestibulum rhoncus nibh vel risus aliquet faucibus. Sed at ex eget ipsum placerat commodo. Quisque pulvinar erat sagittis enim egestas sollicitudin. Proin nisi ipsum, scelerisque eu ornare sit amet, efficitur eu dolor. Donec sapien diam, congue nec luctus ut, condimentum at lacus. Cras eget rhoncus nibh. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum facilisis ornare facilisis. Integer et mollis nunc, id fermentum nisi.'},
   {'titulo': 'Vaga em República', 'imagem': 'images/republica.png', 'autor': 'Maria Julia', 'descricao': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eleifend dolor quis mattis pharetra. Nulla feugiat dui vitae ligula porta mattis. Curabitur quis venenatis lectus. Aliquam et auctor odio, vel aliquet justo. Nulla ipsum mi, mollis vitae lacus nec, blandit congue urna. Maecenas tristique sem vel arcu vestibulum, quis efficitur diam sodales. Vestibulum in elementum tellus. Vestibulum rhoncus nibh vel risus aliquet faucibus. Sed at ex eget ipsum placerat commodo. Quisque pulvinar erat sagittis enim egestas sollicitudin. Proin nisi ipsum, scelerisque eu ornare sit amet, efficitur eu dolor. Donec sapien diam, congue nec luctus ut, condimentum at lacus. Cras eget rhoncus nibh. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum facilisis ornare facilisis. Integer et mollis nunc, id fermentum nisi.'},
+  {'titulo': 'Vaga em República', 'imagem': 'images/republica.png', 'autor': 'Maria Julia', 'descricao': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eleifend dolor quis mattis pharetra. Nulla feugiat dui vitae ligula porta mattis. Curabitur quis venenatis lectus. Aliquam et auctor odio, vel aliquet justo. Nulla ipsum mi, mollis vitae lacus nec, blandit congue urna. Maecenas tristique sem vel arcu vestibulum, quis efficitur diam sodales. Vestibulum in elementum tellus. Vestibulum rhoncus nibh vel risus aliquet faucibus. Sed at ex eget ipsum placerat commodo. Quisque pulvinar erat sagittis enim egestas sollicitudin. Proin nisi ipsum, scelerisque eu ornare sit amet, efficitur eu dolor. Donec sapien diam, congue nec luctus ut, condimentum at lacus. Cras eget rhoncus nibh. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum facilisis ornare facilisis. Integer et mollis nunc, id fermentum nisi.'},
   {'titulo': 'Telescópio', 'imagem': 'images/background.jpeg', 'autor': 'Daniel', 'descricao': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eleifend dolor quis mattis pharetra. Nulla feugiat dui vitae ligula porta mattis. Curabitur quis venenatis lectus. Aliquam et auctor odio, vel aliquet justo. Nulla ipsum mi, mollis vitae lacus nec, blandit congue urna. Maecenas tristique sem vel arcu vestibulum, quis efficitur diam sodales. Vestibulum in elementum tellus. Vestibulum rhoncus nibh vel risus aliquet faucibus. Sed at ex eget ipsum placerat commodo. Quisque pulvinar erat sagittis enim egestas sollicitudin. Proin nisi ipsum, scelerisque eu ornare sit amet, efficitur eu dolor. Donec sapien diam, congue nec luctus ut, condimentum at lacus. Cras eget rhoncus nibh. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum facilisis ornare facilisis. Integer et mollis nunc, id fermentum nisi.'}];
   bool _isOpen = false;
 
@@ -131,9 +133,23 @@ class _AnuncioState extends State<Anuncio> {
                           children: [
                             Text(anuncios[widget.index]['autor']!, style: const TextStyle(fontSize: 16)),
                             IconButton(
-                              icon: const Icon(Icons.account_circle),
-                              onPressed: () {},
-                            )
+                                icon: const Icon(Icons.account_circle, size: 30),
+                                onPressed: () {
+                                  // Navegar para a página do anunciante
+                                  // Navegar para a página do anunciante
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => AnunciantePage(
+                                          nome: anuncios[widget.index]['autor']!, 
+                                           anunciosAutor: anuncios
+                                              .where((anuncio) => anuncio['autor'] == anuncios[widget.index]['autor'])
+                                              .toList(), // Imagens do autor
+                                        ),
+                                      ),
+                                    );
+                                },
+                              ),
                           ],
                         )
                       ],
