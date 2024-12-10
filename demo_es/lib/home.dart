@@ -1,3 +1,4 @@
+import 'package:demo_es/perfil.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
@@ -39,7 +40,11 @@ class _AnuffState extends State<Anuff> {
             padding: EdgeInsets.only(top: 10.0, right: 10.0, bottom: 10.0),
             icon: const Icon(Icons.account_circle),
             iconSize: 40.0,
-            onPressed: () {},
+            onPressed: ()  {Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => PerfilPage()),
+      );
+      },
           ),
         ],
       ),
