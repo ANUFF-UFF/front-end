@@ -83,7 +83,7 @@ class _AnuncioScreenState extends State<AnuncioScreen> {
                       child: Container(
                         padding: const EdgeInsets.all(8.0),
                         decoration: BoxDecoration(
-                          color: Colors.grey[200],
+                          color: Colors.blue[100],
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Column(
@@ -154,7 +154,7 @@ class _AnuncioScreenState extends State<AnuncioScreen> {
                                 style: TextStyle(color: Colors.black),
                               ),
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.grey[300],
+                                backgroundColor: Colors.black26,
                                 foregroundColor: Colors.black,
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 16, vertical: 12),
