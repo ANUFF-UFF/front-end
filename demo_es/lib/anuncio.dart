@@ -1,3 +1,4 @@
+import 'package:demo_es/chat.dart';
 import 'package:demo_es/perfil.dart';
 import 'package:flutter/material.dart';
 
@@ -144,7 +145,14 @@ class _AnuncioScreenState extends State<AnuncioScreen> {
                               style: const TextStyle(fontSize: 16),
                             ),
                             ElevatedButton.icon(
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ChatScreen(info: widget.info),
+                                  ),
+                                );
+                              },
                               icon: const Icon(
                                 Icons.chat,
                                 color: Colors.black,
