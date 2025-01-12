@@ -1,105 +1,94 @@
 import 'package:flutter/material.dart';
 
-class AnunciantePage extends StatelessWidget {
-  final String nome;
+class AdvertiserPage extends StatelessWidget {
+  final Map<String, dynamic> info;
   final List<Map<String, String>> anunciosAutor;
 
-  const AnunciantePage({
-    super.key,
-    required this.nome,
+  const AdvertiserPage({
+    Key? key,
+    required this.info,
     required this.anunciosAutor,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Perfil do Anunciante"),
-        centerTitle: true,
+        title: Text("Perfil do Anunciante"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Perfil do anunciante
-            Card(
-              elevation: 4,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  children: [
-                    CircleAvatar(
-                      radius: 50,
-                      backgroundImage: const AssetImage('images/images.png'),
-                      onBackgroundImageError: (_, __) => const Icon(Icons.person, size: 50),
-                    ),
-                    const SizedBox(height: 10),
-                    Text(
-                      nome,
-                      style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 5),
-                    Text(
-                      "Empreendedor Digital", // Exemplo de ocupação fixa
-                      style: const TextStyle(fontSize: 16, color: Colors.grey),
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: List.generate(
-                        5,
-                        (index) => Icon(
-                          Icons.star,
-                          color: index < 4 ? Colors.amber : Colors.grey, // Exemplo de reputação fixa
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+            // Foto de perfil
+            Center(
+              child: CircleAvatar(
+                radius: 50,
+                backgroundImage: NetworkImage(info['fotoPerfil'] ?? ''),
               ),
             ),
-            const SizedBox(height: 20),
-            const Text(
-              "Anúncios do Anunciante",
+            SizedBox(height: 16),
+
+            // Nome
+            Text(
+              "Nome: ${info['autor'] ?? 'Não informado'}",
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 10),
+
+            // Ocupação
+            Text(
+              "Ocupação: ${info['ocupacao'] ?? 'Não informado'}",
+              style: TextStyle(fontSize: 16),
+            ),
+
+            // Reputação
+            Row(
+              children: [
+                Text(
+                  "Reputação: ",
+                  style: TextStyle(fontSize: 16),
+                ),
+                Icon(
+                  Icons.star,
+                  color: Colors.amber,
+                ),
+                Text(
+                  "${info['reputacao']?.toString() ?? '0.0'}",
+                  style: TextStyle(fontSize: 16),
+                ),
+              ],
+            ),
+
+            SizedBox(height: 24),
+
+            // Título para os anúncios
+            Text(
+              "Seus Anúncios",
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+
+            SizedBox(height: 8),
+
+            // Lista de anúncios
             Expanded(
-              child: ListView.builder(
-                itemCount: anunciosAutor.length,
-                itemBuilder: (context, index) {
-                  final anuncio = anunciosAutor[index];
-                  return Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    margin: const EdgeInsets.only(bottom: 10),
-                    child: ListTile(
-                      contentPadding: const EdgeInsets.all(16.0),
-                      leading: Image.asset(
-                        anuncio['imagem'] ?? '',
-                        width: 50,
-                        height: 50,
-                        fit: BoxFit.cover,
-                      ),
-                      title: Text(
-                        anuncio['titulo'] ?? '',
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      subtitle: Text(
-                        (anuncio['descricao'] ?? '').split('.').first + "...",
-                      ),
-                      onTap: () {
-                        // Implementar navegação para mais detalhes do anúncio, se necessário
+              child: anunciosAutor.isNotEmpty
+                  ? ListView.builder(
+                      itemCount: anunciosAutor.length,
+                      itemBuilder: (context, index) {
+                        final anuncio = anunciosAutor[index];
+                        return Card(
+                          margin: EdgeInsets.symmetric(vertical: 8),
+                          child: ListTile(
+                            title: Text(anuncio['titulo'] ?? 'Título não informado'),
+                            subtitle: Text(anuncio['descricao'] ?? 'Descrição não informada'),
+                          ),
+                        );
                       },
+                    )
+                  : Center(
+                      child: Text("Nenhum anúncio encontrado."),
                     ),
-                  );
-                },
-              ),
             ),
           ],
         ),
