@@ -67,6 +67,8 @@ flutter:
     - images/celular.png
     - images/fisica.png
     - images/republica.png
+    - images/images.png
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
