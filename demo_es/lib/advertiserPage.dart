@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class AdvertiserPage extends StatelessWidget {
   final Map<String, dynamic> info;
-  final List<Map<String, String>> anunciosAutor;
+  final List<Map<String, dynamic>> anunciosAutor;
 
   const AdvertiserPage({
     Key? key,

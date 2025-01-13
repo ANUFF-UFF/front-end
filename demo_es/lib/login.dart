@@ -1,9 +1,43 @@
+import 'dart:convert';
 import 'package:demo_es/home.dart';
 import 'package:flutter/material.dart';
 import 'package:demo_es/register.dart';
+import 'package:http/http.dart' as http;
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+
+  late Map<String, dynamic> usuario;
+
+  Future<Map<String, dynamic>?> verificarUsuario(String email, String senha) async {
+    String url = "http://127.0.0.1:8000/login/";
+    try {
+      http.Response response = await http.post(Uri.parse(url),
+        headers: {
+          'Content-type': 'application/json;charset=UTF-8'
+        },
+        body: jsonEncode({
+          "email": email,
+          "senha": senha
+        })
+      );
+
+      usuario = jsonDecode(response.body);
+
+      return response.statusCode == 200 ? usuario: null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  TextEditingController emailController = TextEditingController();
+  TextEditingController senhaController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +60,7 @@ class LoginScreen extends StatelessWidget {
               SizedBox(
                 width: 700,
                 child: TextField(
+                  controller: emailController,
                   decoration: InputDecoration(
                     labelText: 'E-mail',
                     border: OutlineInputBorder(
@@ -40,6 +75,7 @@ class LoginScreen extends StatelessWidget {
                 width: 700,
                 child: TextField(
                   obscureText: true,
+                  controller: senhaController,
                   decoration: InputDecoration(
                     labelText: 'Senha',
                     border: OutlineInputBorder(
@@ -51,13 +87,28 @@ class LoginScreen extends StatelessWidget {
               ),
               const SizedBox(height: 30),
               ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
+                onPressed: () async {
+                  Map<String, dynamic>? res = await verificarUsuario(emailController.text, senhaController.text);
+
+                  if (res != null) {
+                    Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => Anuff(),
+                        builder: (context) => Anuff(usuario: usuario),
                       ),
                     );
+                  } else {
+                    setState(() {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text('Email, ou Senha Inválidos'),
+                          );
+                        },
+                      );
+                    });
+                  }
                 },
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 80),

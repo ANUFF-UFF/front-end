@@ -24,15 +24,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
     if (_formKey.currentState!.validate()) {
       // Preparar os dados para envio
       final data = {
-        'name': _nameController.text,
+        'nome': _nameController.text,
         'email': _emailController.text,
-        'password': _passwordController.text,
-        'occupation': _occupationController.text,
+        'senha': _passwordController.text,
+        'ocupacao': _occupationController.text,
       };
 
       try {
         final response = await http.post(
-          Uri.parse('https://seu-backend.com/api/register'),
+          Uri.parse('http://127.0.0.1:8000/usuarios/'),
           headers: {'Content-Type': 'application/json'},
           body: json.encode(data),
         );
@@ -43,14 +43,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
             const SnackBar(content: Text('Cadastro realizado com sucesso!')),
           );
           Navigator.pop(context);
-        } else {
-          // Falha no cadastro
-          setState(() {
-          });
         }
       } catch (e) {
         setState(() {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text('Falha com API'),
+              );
+            },
+          );
         });
+        Navigator.pop(context);
       }
     }
   }
