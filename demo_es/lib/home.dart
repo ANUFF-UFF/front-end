@@ -20,9 +20,15 @@ class _AnuffState extends State<Anuff> {
 
     String url = "http://127.0.0.1:8000/anuncios/";
     http.Response response = await http.get(Uri.parse(url));
-    List<dynamic> ret = jsonDecode(response.body);
+    List<dynamic> jsonList = jsonDecode(response.body);
 
-    return ret as List<Map<String, dynamic>>;
+    if (jsonList.isNotEmpty) {
+      List<Map<String, dynamic>> ret = jsonList.cast<Map<String, dynamic>>();
+
+      return ret;
+    } else {
+      throw Exception("Erro ao buscar os dados");
+    }
   }
 
   @override
@@ -133,11 +139,11 @@ class _AnuncioState extends State<Anuncio> {
                   ),
                   Row(
                     children: [
-                      Icon(Icons.star, color: widget.anuncios[widget.index]['nota'] >= 1 ? Colors.amber : Colors.grey),
-                      Icon(Icons.star, color: widget.anuncios[widget.index]['nota'] >= 2 ? Colors.amber : Colors.grey),
-                      Icon(Icons.star, color: widget.anuncios[widget.index]['nota'] >= 3 ? Colors.amber : Colors.grey),
-                      Icon(Icons.star, color: widget.anuncios[widget.index]['nota'] >= 4 ? Colors.amber : Colors.grey),
-                      Icon(Icons.star, color: widget.anuncios[widget.index]['nota'] >= 5 ? Colors.amber : Colors.grey)
+                      Icon(Icons.star, color: widget.anuncios[widget.index]['nota'].round() >= 1 ? Colors.amber : Colors.grey),
+                      Icon(Icons.star, color: widget.anuncios[widget.index]['nota'].round() >= 2 ? Colors.amber : Colors.grey),
+                      Icon(Icons.star, color: widget.anuncios[widget.index]['nota'].round() >= 3 ? Colors.amber : Colors.grey),
+                      Icon(Icons.star, color: widget.anuncios[widget.index]['nota'].round() >= 4 ? Colors.amber : Colors.grey),
+                      Icon(Icons.star, color: widget.anuncios[widget.index]['nota'].round() >= 5 ? Colors.amber : Colors.grey)
                     ],
                   )
                 ],
@@ -153,7 +159,7 @@ class _AnuncioState extends State<Anuncio> {
                 );
               },
               child: Image.asset(
-                widget.anuncios[widget.index]['imagem']!,
+                widget.anuncios[widget.index]['foto']!,
                 fit: BoxFit.cover,
               )
             ),

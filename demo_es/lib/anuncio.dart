@@ -21,9 +21,15 @@ class _AnuncioScreenState extends State<AnuncioScreen> {
 
     String url = "http://127.0.0.1:8000/avaliacao/${widget.info['id'].toString()}/";
     http.Response response = await http.get(Uri.parse(url));
-    List<dynamic> ret = jsonDecode(response.body);
+    List<dynamic> jsonList = jsonDecode(response.body);
 
-    return ret as List<Map<String, dynamic>>;
+    if (jsonList.isNotEmpty) {
+      List<Map<String, dynamic>> ret = jsonList.cast<Map<String, dynamic>>();
+
+      return ret;
+    } else {
+      throw Exception("Erro ao buscar os dados");
+    }
   }
 
   void _addComment() async {
@@ -100,7 +106,7 @@ class _AnuncioScreenState extends State<AnuncioScreen> {
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(8),
                                 image: DecorationImage(
-                                  image: AssetImage(widget.info['imagem'] ?? 'images/background.jpeg'),
+                                  image: AssetImage(widget.info['foto'] ?? 'images/background.jpeg'),
                                   fit: BoxFit.fitHeight,
                                 ),
                               ),
@@ -135,7 +141,7 @@ class _AnuncioScreenState extends State<AnuncioScreen> {
                                     5,
                                     (index) => Icon(
                                       Icons.star,
-                                      color: widget.info['estrelas'] > index ? Colors.amber : Colors.grey,
+                                      color: widget.info['nota'].round() > index ? Colors.amber : Colors.grey,
                                       size: 30,
                                     ),
                                   ),

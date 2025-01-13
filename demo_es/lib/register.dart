@@ -55,6 +55,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             },
           );
         });
+        Navigator.pop(context);
       }
     }
   }

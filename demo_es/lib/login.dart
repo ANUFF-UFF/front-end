@@ -15,7 +15,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   late Map<String, dynamic> usuario;
 
-  Future<int> verificarUsuario(String email, String senha) async {
+  Future<Map<String, dynamic>?> verificarUsuario(String email, String senha) async {
     String url = "http://127.0.0.1:8000/login/";
     try {
       http.Response response = await http.post(Uri.parse(url),
@@ -30,9 +30,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
       usuario = jsonDecode(response.body);
 
-      return response.statusCode;
+      return response.statusCode == 200 ? usuario: null;
     } catch (e) {
-      return 0;
+      return null;
     }
   }
 
@@ -88,16 +88,16 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(height: 30),
               ElevatedButton(
                 onPressed: () async {
-                  int res = await verificarUsuario(emailController.text, senhaController.text);
+                  Map<String, dynamic>? res = await verificarUsuario(emailController.text, senhaController.text);
 
-                  if (res == 200) {
+                  if (res != null) {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => Anuff(usuario: usuario),
                       ),
                     );
-                  } else if (res == 401) {
+                  } else {
                     setState(() {
                       showDialog(
                         context: context,
