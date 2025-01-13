@@ -66,7 +66,7 @@ class _AnuffState extends State<Anuff> {
               final bool anuncioCriado = await Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => CriarAnuncioPage(),
+                  builder: (context) => CriarAnuncioPage(autor: widget.usuario['id']),
                 ),
               );
               //logica de atualizacao dos anuncios
