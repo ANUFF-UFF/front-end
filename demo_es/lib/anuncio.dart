@@ -1,4 +1,3 @@
-import 'package:demo_es/advertiserPage.dart';
 import 'package:demo_es/chat.dart';
 import 'package:demo_es/perfil.dart';
 import 'package:flutter/material.dart';
@@ -33,19 +32,17 @@ class _AnuncioScreenState extends State<AnuncioScreen> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text(
-          'ANUFF',
-          style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold, color: Colors.blue),
-        ),
+        title: const Text('ANUFF', style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold, color: Colors.blue)),
         actions: [
           IconButton(
-            icon: const Icon(Icons.account_circle, size: 40.0),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => PerfilPage()),
-              );
-            },
+            padding: EdgeInsets.only(top: 10.0, right: 10.0, bottom: 10.0),
+            icon: const Icon(Icons.account_circle),
+            iconSize: 40.0,
+            onPressed: ()  {Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => PerfilPage()),
+      );
+      },
           ),
         ],
       ),
@@ -61,29 +58,31 @@ class _AnuncioScreenState extends State<AnuncioScreen> {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    // Imagem do anúncio
                     Flexible(
                       flex: 1,
                       child: AspectRatio(
                         aspectRatio: 1,
-                        child: Container(
-                          margin: const EdgeInsets.all(8.0),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            image: DecorationImage(
-                              image: AssetImage(widget.info['imagem'] ?? 'images/background.jpeg'),
-                              fit: BoxFit.cover,
+                        child: PageView(
+                          children: [
+                            Container(
+                              margin: const EdgeInsets.all(8.0),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                image: DecorationImage(
+                                  image: AssetImage(widget.info['imagem'] ?? 'images/background.jpeg'),
+                                  fit: BoxFit.fitHeight,
+                                ),
+                              ),
                             ),
-                          ),
+                          ],
                         ),
                       ),
                     ),
                     const SizedBox(width: 16),
-                    // Detalhes do anúncio
                     Flexible(
                       flex: 1,
                       child: Container(
-                        padding: const EdgeInsets.all(16.0),
+                        padding: const EdgeInsets.all(8.0),
                         decoration: BoxDecoration(
                           color: Colors.blue[100],
                           borderRadius: BorderRadius.circular(8),
@@ -96,33 +95,41 @@ class _AnuncioScreenState extends State<AnuncioScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  widget.info['titulo'] ?? 'Sem Titulo',
-                                  style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                                  (widget.info['titulo'] ?? 'Sem Titulo'),
+                                  style: const TextStyle(
+                                      fontSize: 30, fontWeight: FontWeight.bold),
                                 ),
                                 Row(
                                   children: List.generate(
                                     5,
-                                    (index) => const Icon(Icons.star, color: Colors.amber, size: 30),
+                                    (index) => const Icon(
+                                      Icons.star,
+                                      color: Colors.amber,
+                                      size: 30,
+                                    ),
                                   ),
                                 ),
                               ],
                             ),
-                            const SizedBox(height: 16),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const Text(
                                   'Preço:',
-                                  style: TextStyle(fontSize: 24),
+                                  style: TextStyle(
+                                    fontSize: 24,
+                                  ),
                                 ),
                                 Row(
                                   children: [
                                     const Text(
                                       'R\$ ',
-                                      style: TextStyle(fontSize: 24),
+                                      style: TextStyle(
+                                        fontSize: 24,
+                                      ),
                                     ),
                                     Text(
-                                      widget.info['preco'] ?? '500',
+                                      (widget.info['preco'] ?? '500'),
                                       style: const TextStyle(
                                         fontSize: 24,
                                         fontWeight: FontWeight.bold,
@@ -130,15 +137,13 @@ class _AnuncioScreenState extends State<AnuncioScreen> {
                                       ),
                                     ),
                                   ],
-                                ),
+                                )
                               ],
                             ),
-                            const SizedBox(height: 16),
                             Text(
-                              widget.info['descricao'] ?? '',
+                              (widget.info['descricao'] ?? ''),
                               style: const TextStyle(fontSize: 16),
                             ),
-                            const SizedBox(height: 16),
                             ElevatedButton.icon(
                               onPressed: () {
                                 Navigator.push(
@@ -148,28 +153,45 @@ class _AnuncioScreenState extends State<AnuncioScreen> {
                                   ),
                                 );
                               },
-                              icon: const Icon(Icons.chat),
-                              label: const Text('Chat com o Vendedor'),
+                              icon: const Icon(
+                                Icons.chat,
+                                color: Colors.black,
+                              ),
+                              label: const Text(
+                                'Chat com o Vendedor',
+                                style: TextStyle(color: Colors.black),
+                              ),
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.blue,
-                                foregroundColor: Colors.white,
-                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                                backgroundColor: Colors.black26,
+                                foregroundColor: Colors.black,
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16, vertical: 12),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(8),
                                 ),
+                                shadowColor: Colors.transparent,
                               ),
                             ),
-                            const SizedBox(height: 16),
                             ListTile(
                               leading: const CircleAvatar(
                                 backgroundImage: AssetImage('images/celular.png'),
                               ),
-                              title: Text(widget.info['autor'] ?? 'Sem autor'),
-                              subtitle: const Text('Ver perfil do autor'),
-                              onTap: () {
-                                 
-
-                              },
+                              title: Row(children: [
+                                Text(widget.info['autor'] ?? 'Sem autor'),
+                                const SizedBox(width: 16),
+                                Row(
+                                  children: List.generate(
+                                    3,
+                                    (index) => const Icon(
+                                      Icons.star,
+                                      color: Colors.amber,
+                                      size: 16,
+                                    ),
+                                  ),
+                                ),
+                              ]),
+                              subtitle: const Text('Ver perfil'),
+                              onTap: () {},
                             ),
                           ],
                         ),
@@ -195,6 +217,7 @@ class _AnuncioScreenState extends State<AnuncioScreen> {
                       ),
                       title: Text('Usuário ${index + 1}'),
                       subtitle: Text(_comments[index]),
+                      onTap: () {},
                     );
                   },
                 ),
