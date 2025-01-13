@@ -19,7 +19,7 @@ class _AnuncioScreenState extends State<AnuncioScreen> {
 
   Future<List<Map<String, dynamic>>> getAvaliacao() async {
 
-    String url = "http://127.0.0.1:8000/avaliacao/${widget.info['id'].toString()}/";
+    String url = "http://127.0.0.1:8000/avaliacoes/${widget.info['id'].toString()}/";
     http.Response response = await http.get(Uri.parse(url));
     List<dynamic> jsonList = jsonDecode(response.body);
 
@@ -175,7 +175,7 @@ class _AnuncioScreenState extends State<AnuncioScreen> {
                                       ),
                                     ),
                                     Text(
-                                      (widget.info['preco'] ?? '500'),
+                                      (widget.info['preco'].toString()),
                                       style: const TextStyle(
                                         fontSize: 24,
                                         fontWeight: FontWeight.bold,
