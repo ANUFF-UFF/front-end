@@ -16,7 +16,7 @@ class _LoginScreenState extends State<LoginScreen> {
   late Map<String, dynamic> usuario;
 
   Future<int> verificarUsuario(String email, String senha) async {
-    String url = "https://127.0.0.1:8000/";
+    String url = "https://127.0.0.1:8000/login";
     try {
       http.Response response = await http.post(Uri.parse(url),
         headers: {
@@ -103,7 +103,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
-                            title: Text('O email, ou senha são inválidos'),
+                            title: Text('Email, ou Senha Inválidos'),
                           );
                         },
                       );

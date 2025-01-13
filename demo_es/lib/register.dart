@@ -24,15 +24,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
     if (_formKey.currentState!.validate()) {
       // Preparar os dados para envio
       final data = {
-        'name': _nameController.text,
+        'nome': _nameController.text,
         'email': _emailController.text,
-        'password': _passwordController.text,
-        'occupation': _occupationController.text,
+        'senha': _passwordController.text,
+        'ocupacao': _occupationController.text,
       };
 
       try {
         final response = await http.post(
-          Uri.parse('https://127.0.0.1:8000/'),
+          Uri.parse('https://127.0.0.1:8000/usuarios'),
           headers: {'Content-Type': 'application/json'},
           body: json.encode(data),
         );
