@@ -32,7 +32,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
       try {
         final response = await http.post(
-          Uri.parse('https://seu-backend.com/api/register'),
+          Uri.parse('https://127.0.0.1:8000/'),
           headers: {'Content-Type': 'application/json'},
           body: json.encode(data),
         );
@@ -46,10 +46,26 @@ class _RegisterScreenState extends State<RegisterScreen> {
         } else {
           // Falha no cadastro
           setState(() {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Text('Erro ao cadastrar, possível usuário já existente'),
+                );
+              },
+            );
           });
         }
       } catch (e) {
         setState(() {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text('Falha com API'),
+              );
+            },
+          );
         });
       }
     }

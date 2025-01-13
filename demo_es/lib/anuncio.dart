@@ -1,10 +1,13 @@
+import 'dart:convert';
 import 'package:demo_es/chat.dart';
 import 'package:demo_es/perfil.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class AnuncioScreen extends StatefulWidget {
-  final Map<String, String> info;
-  const AnuncioScreen({required this.info, super.key});
+  final Map<String, dynamic> info;
+  final Map<String, dynamic> usuario;
+  const AnuncioScreen({required this.usuario, required this.info, super.key});
 
   @override
   _AnuncioScreenState createState() => _AnuncioScreenState();
@@ -12,18 +15,46 @@ class AnuncioScreen extends StatefulWidget {
 
 class _AnuncioScreenState extends State<AnuncioScreen> {
   final TextEditingController _commentController = TextEditingController();
-  final List<String> _comments = [
-    'Comentário sobre o anúncio aqui.',
-    'Muito interessante!',
-    'Parece um ótimo produto.',
-  ];
+  int avaliacao = 0;
 
-  void _addComment() {
+  Future<List<Map<String, dynamic>>> getAvaliaao() async {
+
+    String url = "https://127.0.0.1:8000/avaliacao/${widget.info['id'].toString()}";
+    http.Response response = await http.get(Uri.parse(url));
+    List<Map<String, dynamic>> ret = jsonDecode(response.body);
+
+    return ret;
+  }
+
+  void _addComment() async {
     if (_commentController.text.trim().isNotEmpty) {
-      setState(() {
-        _comments.add(_commentController.text.trim());
-        _commentController.clear();
-      });
+
+      final data = {
+        'nota': avaliacao,
+        'comentario': _commentController.text,
+        'autor': widget.usuario['id'],
+        'anuncio': widget.info['id'],
+      };
+
+      final response = await http.post(
+        Uri.parse('https://127.0.0.1:8000/'),
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode(data),
+      );
+
+      if (response.statusCode == 200) {
+      // Comentário enviado com sucesso
+        setState(() {
+          _commentController.clear(); // Limpa o campo de texto
+          avaliacao = 0; // Reseta a avaliação
+        });
+
+        // Atualiza os comentários
+        setState(() {});
+      } else {
+        // Exibe um erro, se necessário
+        print("Erro ao adicionar comentário: ${response.body}");
+      }
     }
   }
 
@@ -102,9 +133,9 @@ class _AnuncioScreenState extends State<AnuncioScreen> {
                                 Row(
                                   children: List.generate(
                                     5,
-                                    (index) => const Icon(
+                                    (index) => Icon(
                                       Icons.star,
-                                      color: Colors.amber,
+                                      color: widget.info['estrelas'] > index ? Colors.amber : Colors.grey,
                                       size: 30,
                                     ),
                                   ),
@@ -207,20 +238,50 @@ class _AnuncioScreenState extends State<AnuncioScreen> {
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: _comments.length,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      leading: const CircleAvatar(
-                        backgroundImage: AssetImage('images/celular.png'),
+              FutureBuilder(
+                future: getAvaliaao(),
+                builder: (context, snapshot) {
+
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return CircularProgressIndicator();
+
+                  } else if (snapshot.hasError) {
+                    return Text(snapshot.error.toString());
+
+                  } else if (snapshot.hasData) {
+                    return Expanded(
+                      child: ListView.builder(
+                        itemCount: snapshot.data!.length,
+                        itemBuilder: (context, index) {
+                          return ListTile(
+                            leading: CircleAvatar(
+                              backgroundImage: AssetImage(snapshot.data![index]['foto']),
+                            ),
+                            title: Text(snapshot.data![index]['nome']),
+                            subtitle: Row(
+                              children: [
+                                Text(snapshot.data![index]['comentario']),
+                                Row(
+                                  children: List.generate(
+                                    5,
+                                    (index) => Icon(
+                                        Icons.star,
+                                        color: snapshot.data![index]['nota'] >= index ? Colors.amber : Colors.grey,
+                                        size: 10
+                                    )
+                                  ),
+                                ),
+                              ],
+                            ),
+                            onTap: () {},
+                          );
+                        },
                       ),
-                      title: Text('Usuário ${index + 1}'),
-                      subtitle: Text(_comments[index]),
-                      onTap: () {},
                     );
-                  },
-                ),
+                  } else {
+                    return Text('Não há Avaliações');
+                  }
+                },
               ),
               const Divider(),
               Row(
@@ -235,6 +296,22 @@ class _AnuncioScreenState extends State<AnuncioScreen> {
                     ),
                   ),
                   const SizedBox(width: 8),
+                  Row(
+                    children: List.generate(
+                      5,
+                      (index) => IconButton(
+                        icon: Icon(Icons.star,
+                          color: avaliacao >= index ? Colors.amber : Colors.grey,
+                          size: 20
+                          ),
+                        onPressed: () {
+                          setState(() {
+                            avaliacao = index;
+                          });
+                        },
+                      ),
+                    ),
+                  ),
                   IconButton(
                     icon: const Icon(Icons.send, color: Colors.blue),
                     onPressed: _addComment,

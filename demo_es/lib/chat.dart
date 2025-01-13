@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class ChatScreen extends StatefulWidget {
-  final Map<String, String> info;
+  final Map<String, dynamic> info;
 
   const ChatScreen({required this.info, Key? key}) : super(key: key);
 

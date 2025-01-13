@@ -1,16 +1,30 @@
+import 'dart:convert';
 import 'package:demo_es/perfil.dart';
 import 'package:demo_es/anuncio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:http/http.dart' as http;
 
 class Anuff extends StatefulWidget {
-  const Anuff({super.key});
+  final Map<String, dynamic> usuario;
+
+  Anuff({required this.usuario, super.key});
 
   @override
   State<Anuff> createState() => _AnuffState();
 }
 
 class _AnuffState extends State<Anuff> {
+
+  Future<List<Map<String, dynamic>>> getAnuncios() async {
+
+    String url = "https://127.0.0.1:8000/anuncios";
+    http.Response response = await http.get(Uri.parse(url));
+    List<Map<String, dynamic>> ret = jsonDecode(response.body);
+
+    return ret;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,18 +63,34 @@ class _AnuffState extends State<Anuff> {
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(25.0),
-        child: MasonryGridView.count(
-          crossAxisCount: 4,
-          mainAxisSpacing: 25,
-          crossAxisSpacing: 25,
-          itemCount: 5,
-          itemBuilder: (context, index) {
-            return Anuncio(index: index);
-          },
-        ),
-      ),
+      body: FutureBuilder(
+        future: getAnuncios(),
+        builder: (context, snapshot) {
+
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return CircularProgressIndicator();
+
+          } else if (snapshot.hasError) {
+            return Text(snapshot.error.toString());
+
+          } else if (snapshot.hasData) {
+            return Padding(
+              padding: const EdgeInsets.all(25.0),
+              child: MasonryGridView.count(
+                crossAxisCount: 4,
+                mainAxisSpacing: 25,
+                crossAxisSpacing: 25,
+                itemCount: snapshot.data!.length,
+                itemBuilder: (context, index) {
+                  return Anuncio(anuncios: snapshot.data!, index: index, usuario: widget.usuario );
+                },
+              ),
+            );
+          } else {
+            return Text('Não há Anuncios');
+          }
+        },
+      )
     );
   }
 }
@@ -68,19 +98,16 @@ class _AnuffState extends State<Anuff> {
 
 class Anuncio extends StatefulWidget {
   final int index;
+  final List<Map<String, dynamic>> anuncios;
+  final Map<String, dynamic> usuario;
 
-  const Anuncio({required this.index, super.key});
+  const Anuncio({required this.usuario, required this.anuncios, required this.index, super.key});
 
   @override
   State<Anuncio> createState() => _AnuncioState();
 }
 
 class _AnuncioState extends State<Anuncio> {
-  static List<Map<String, String>> anuncios = [{'titulo': 'Livro', 'preco': '500', 'imagem': 'images/livro.png', 'autor': 'Adriano', 'descricao': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eleifend dolor quis mattis pharetra. Nulla feugiat dui vitae ligula porta mattis. Curabitur quis venenatis lectus. Aliquam et auctor odio, vel aliquet justo. Nulla ipsum mi, mollis vitae lacus nec, blandit congue urna. Maecenas tristique sem vel arcu vestibulum, quis efficitur diam sodales. Vestibulum in elementum tellus. Vestibulum rhoncus nibh vel risus aliquet faucibus. Sed at ex eget ipsum placerat commodo. Quisque pulvinar erat sagittis enim egestas sollicitudin. Proin nisi ipsum, scelerisque eu ornare sit amet, efficitur eu dolor. Donec sapien diam, congue nec luctus ut, condimentum at lacus. Cras eget rhoncus nibh. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum facilisis ornare facilisis. Integer et mollis nunc, id fermentum nisi.'},
-  {'titulo': 'Celular', 'preco': '500', 'imagem': 'images/celular.png', 'autor': 'Arthur', 'descricao': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eleifend dolor quis mattis pharetra. Nulla feugiat dui vitae ligula porta mattis. Curabitur quis venenatis lectus. Aliquam et auctor odio, vel aliquet justo. Nulla ipsum mi, mollis vitae lacus nec, blandit congue urna. Maecenas tristique sem vel arcu vestibulum, quis efficitur diam sodales. Vestibulum in elementum tellus. Vestibulum rhoncus nibh vel risus aliquet faucibus. Sed at ex eget ipsum placerat commodo. Quisque pulvinar erat sagittis enim egestas sollicitudin. Proin nisi ipsum, scelerisque eu ornare sit amet, efficitur eu dolor. Donec sapien diam, congue nec luctus ut, condimentum at lacus. Cras eget rhoncus nibh. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum facilisis ornare facilisis. Integer et mollis nunc, id fermentum nisi.'},
-  {'titulo': 'Aulas de Física', 'preco': '500', 'imagem': 'images/fisica.png', 'autor': 'Andre', 'descricao': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eleifend dolor quis mattis pharetra. Nulla feugiat dui vitae ligula porta mattis. Curabitur quis venenatis lectus. Aliquam et auctor odio, vel aliquet justo. Nulla ipsum mi, mollis vitae lacus nec, blandit congue urna. Maecenas tristique sem vel arcu vestibulum, quis efficitur diam sodales. Vestibulum in elementum tellus. Vestibulum rhoncus nibh vel risus aliquet faucibus. Sed at ex eget ipsum placerat commodo. Quisque pulvinar erat sagittis enim egestas sollicitudin. Proin nisi ipsum, scelerisque eu ornare sit amet, efficitur eu dolor. Donec sapien diam, congue nec luctus ut, condimentum at lacus. Cras eget rhoncus nibh. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum facilisis ornare facilisis. Integer et mollis nunc, id fermentum nisi.'},
-  {'titulo': 'Vaga em República', 'preco': '500', 'imagem': 'images/republica.png', 'autor': 'Maria Julia', 'descricao': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eleifend dolor quis mattis pharetra. Nulla feugiat dui vitae ligula porta mattis. Curabitur quis venenatis lectus. Aliquam et auctor odio, vel aliquet justo. Nulla ipsum mi, mollis vitae lacus nec, blandit congue urna. Maecenas tristique sem vel arcu vestibulum, quis efficitur diam sodales. Vestibulum in elementum tellus. Vestibulum rhoncus nibh vel risus aliquet faucibus. Sed at ex eget ipsum placerat commodo. Quisque pulvinar erat sagittis enim egestas sollicitudin. Proin nisi ipsum, scelerisque eu ornare sit amet, efficitur eu dolor. Donec sapien diam, congue nec luctus ut, condimentum at lacus. Cras eget rhoncus nibh. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum facilisis ornare facilisis. Integer et mollis nunc, id fermentum nisi.'},
-  {'titulo': 'Telescópio', 'preco': '500', 'imagem': 'images/background.jpeg', 'autor': 'Daniel', 'descricao': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eleifend dolor quis mattis pharetra. Nulla feugiat dui vitae ligula porta mattis. Curabitur quis venenatis lectus. Aliquam et auctor odio, vel aliquet justo. Nulla ipsum mi, mollis vitae lacus nec, blandit congue urna. Maecenas tristique sem vel arcu vestibulum, quis efficitur diam sodales. Vestibulum in elementum tellus. Vestibulum rhoncus nibh vel risus aliquet faucibus. Sed at ex eget ipsum placerat commodo. Quisque pulvinar erat sagittis enim egestas sollicitudin. Proin nisi ipsum, scelerisque eu ornare sit amet, efficitur eu dolor. Donec sapien diam, congue nec luctus ut, condimentum at lacus. Cras eget rhoncus nibh. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum facilisis ornare facilisis. Integer et mollis nunc, id fermentum nisi.'}];
   bool _isOpen = false;
 
 
@@ -101,14 +128,16 @@ class _AnuncioState extends State<Anuncio> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    anuncios[widget.index]['titulo']!,
+                    widget.anuncios[widget.index]['titulo']!,
                     style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                   ),
                   Row(
                     children: [
-                      Icon(Icons.star, color: Colors.amber),
-                      Icon(Icons.star, color: Colors.amber),
-                      Icon(Icons.star, color: Colors.amber)
+                      Icon(Icons.star, color: widget.anuncios[widget.index]['nota'] >= 1 ? Colors.amber : Colors.grey),
+                      Icon(Icons.star, color: widget.anuncios[widget.index]['nota'] >= 2 ? Colors.amber : Colors.grey),
+                      Icon(Icons.star, color: widget.anuncios[widget.index]['nota'] >= 3 ? Colors.amber : Colors.grey),
+                      Icon(Icons.star, color: widget.anuncios[widget.index]['nota'] >= 4 ? Colors.amber : Colors.grey),
+                      Icon(Icons.star, color: widget.anuncios[widget.index]['nota'] >= 5 ? Colors.amber : Colors.grey)
                     ],
                   )
                 ],
@@ -119,12 +148,12 @@ class _AnuncioState extends State<Anuncio> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => AnuncioScreen(info: anuncios[widget.index]),
+                    builder: (context) => AnuncioScreen(info: widget.anuncios[widget.index], usuario: widget.usuario),
                   ),
                 );
               },
               child: Image.asset(
-                anuncios[widget.index]['imagem']!,
+                widget.anuncios[widget.index]['imagem']!,
                 fit: BoxFit.cover,
               )
             ),
@@ -145,7 +174,7 @@ class _AnuncioState extends State<Anuncio> {
                         Text('Descrição', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                         Row(
                           children: [
-                            Text(anuncios[widget.index]['autor']!, style: const TextStyle(fontSize: 16)),
+                            Text(widget.anuncios[widget.index]['autor']!, style: const TextStyle(fontSize: 16)),
                             IconButton(
                               icon: const Icon(Icons.account_circle),
                               onPressed: () {},
@@ -159,7 +188,7 @@ class _AnuncioState extends State<Anuncio> {
                 body: Padding(
                   padding: const EdgeInsets.all(15.0),
                   child: Text(
-                    anuncios[widget.index]['descricao']!,
+                    widget.anuncios[widget.index]['descricao']!,
                     style: const TextStyle(fontSize: 16),
                   ),
                 ),
