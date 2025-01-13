@@ -16,7 +16,7 @@ class _LoginScreenState extends State<LoginScreen> {
   late Map<String, dynamic> usuario;
 
   Future<int> verificarUsuario(String email, String senha) async {
-    String url = "https://127.0.0.1:8000/login";
+    String url = "http://127.0.0.1:8000/login";
     try {
       http.Response response = await http.post(Uri.parse(url),
         headers: {

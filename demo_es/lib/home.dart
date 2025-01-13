@@ -18,7 +18,7 @@ class _AnuffState extends State<Anuff> {
 
   Future<List<Map<String, dynamic>>> getAnuncios() async {
 
-    String url = "https://127.0.0.1:8000/anuncios";
+    String url = "http://127.0.0.1:8000/anuncios";
     http.Response response = await http.get(Uri.parse(url));
     List<Map<String, dynamic>> ret = jsonDecode(response.body);
 
