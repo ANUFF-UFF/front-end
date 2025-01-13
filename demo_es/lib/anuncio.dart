@@ -19,7 +19,7 @@ class _AnuncioScreenState extends State<AnuncioScreen> {
 
   Future<List<Map<String, dynamic>>> getAvaliacao() async {
 
-    String url = "http://127.0.0.1:8000/avaliacoes/${widget.info['id'].toString()}/";
+    String url = "http://127.0.0.1:8000/avaliacoes/anuncio/${widget.info['id'].toString()}/";
     http.Response response = await http.get(Uri.parse(url));
     List<dynamic> jsonList = jsonDecode(response.body);
 
@@ -253,50 +253,53 @@ class _AnuncioScreenState extends State<AnuncioScreen> {
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
-              FutureBuilder(
-                future: getAvaliacao(),
-                builder: (context, snapshot) {
+              SizedBox(
+                height: 100,
+                child: FutureBuilder(
+                  future: getAvaliacao(),
+                  builder: (context, snapshot) {
 
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return CircularProgressIndicator();
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return CircularProgressIndicator();
 
-                  } else if (snapshot.hasError) {
-                    return Text(snapshot.error.toString());
+                    } else if (snapshot.hasError) {
+                      return Text(snapshot.error.toString());
 
-                  } else if (snapshot.hasData) {
-                    return Expanded(
-                      child: ListView.builder(
-                        itemCount: snapshot.data!.length,
-                        itemBuilder: (context, index) {
-                          return ListTile(
-                            leading: CircleAvatar(
-                              backgroundImage: AssetImage(snapshot.data![index]['foto']),
-                            ),
-                            title: Text(snapshot.data![index]['nome']),
-                            subtitle: Row(
-                              children: [
-                                Text(snapshot.data![index]['comentario']),
-                                Row(
-                                  children: List.generate(
-                                    5,
-                                    (index) => Icon(
-                                        Icons.star,
-                                        color: snapshot.data![index]['nota'] >= index ? Colors.amber : Colors.grey,
-                                        size: 10
-                                    )
+                    } else if (snapshot.hasData) {
+                      return Expanded(
+                        child: ListView.builder(
+                          itemCount: snapshot.data!.length,
+                          itemBuilder: (context, index) {
+                            return ListTile(
+                              leading: CircleAvatar(
+                                backgroundImage: AssetImage(snapshot.data![index]['foto'] ?? 'images/celular.png'),
+                              ),
+                              title: Text(snapshot.data![index]['nome']),
+                              subtitle: Row(
+                                children: [
+                                  Text(snapshot.data![index]['comentario']),
+                                  Row(
+                                    children: List.generate(
+                                      5,
+                                      (indexS) => Icon(
+                                          Icons.star,
+                                          color: snapshot.data![index]['nota'] >= indexS ? Colors.amber : Colors.grey,
+                                          size: 10
+                                      )
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                            onTap: () {},
-                          );
-                        },
-                      ),
-                    );
-                  } else {
-                    return Text('Não há Avaliações');
-                  }
-                },
+                                ],
+                              ),
+                              onTap: () {},
+                            );
+                          },
+                        ),
+                      );
+                    } else {
+                      return Text('Não há Avaliações');
+                    }
+                  },
+                ),
               ),
               const Divider(),
               Row(
