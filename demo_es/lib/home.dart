@@ -1,18 +1,8 @@
-
-import 'package:demo_es/advertiserPage.dart';
 import 'package:demo_es/criarAnuncio.dart';
 import 'package:demo_es/perfil.dart';
 import 'package:demo_es/anuncio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-
-List<Map<String, String>> anuncios = [{'titulo': 'Livro', 'preco': '500', 'imagem': 'images/livro.png', 'autor': 'Adriano', 'descricao': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eleifend dolor quis mattis pharetra. Nulla feugiat dui vitae ligula porta mattis. Curabitur quis venenatis lectus. Aliquam et auctor odio, vel aliquet justo. Nulla ipsum mi, mollis vitae lacus nec, blandit congue urna. Maecenas tristique sem vel arcu vestibulum, quis efficitur diam sodales. Vestibulum in elementum tellus. Vestibulum rhoncus nibh vel risus aliquet faucibus. Sed at ex eget ipsum placerat commodo. Quisque pulvinar erat sagittis enim egestas sollicitudin. Proin nisi ipsum, scelerisque eu ornare sit amet, efficitur eu dolor. Donec sapien diam, congue nec luctus ut, condimentum at lacus. Cras eget rhoncus nibh. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum facilisis ornare facilisis. Integer et mollis nunc, id fermentum nisi.'},
-  {'titulo': 'Celular', 'preco': '500', 'imagem': 'images/celular.png', 'autor': 'Arthur', 'descricao': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eleifend dolor quis mattis pharetra. Nulla feugiat dui vitae ligula porta mattis. Curabitur quis venenatis lectus. Aliquam et auctor odio, vel aliquet justo. Nulla ipsum mi, mollis vitae lacus nec, blandit congue urna. Maecenas tristique sem vel arcu vestibulum, quis efficitur diam sodales. Vestibulum in elementum tellus. Vestibulum rhoncus nibh vel risus aliquet faucibus. Sed at ex eget ipsum placerat commodo. Quisque pulvinar erat sagittis enim egestas sollicitudin. Proin nisi ipsum, scelerisque eu ornare sit amet, efficitur eu dolor. Donec sapien diam, congue nec luctus ut, condimentum at lacus. Cras eget rhoncus nibh. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum facilisis ornare facilisis. Integer et mollis nunc, id fermentum nisi.'},
-  {'titulo': 'Aulas de Física','preco': '500', 'imagem': 'images/fisica.png', 'autor': 'Andre', 'descricao': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eleifend dolor quis mattis pharetra. Nulla feugiat dui vitae ligula porta mattis. Curabitur quis venenatis lectus. Aliquam et auctor odio, vel aliquet justo. Nulla ipsum mi, mollis vitae lacus nec, blandit congue urna. Maecenas tristique sem vel arcu vestibulum, quis efficitur diam sodales. Vestibulum in elementum tellus. Vestibulum rhoncus nibh vel risus aliquet faucibus. Sed at ex eget ipsum placerat commodo. Quisque pulvinar erat sagittis enim egestas sollicitudin. Proin nisi ipsum, scelerisque eu ornare sit amet, efficitur eu dolor. Donec sapien diam, congue nec luctus ut, condimentum at lacus. Cras eget rhoncus nibh. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum facilisis ornare facilisis. Integer et mollis nunc, id fermentum nisi.'},
-  {'titulo': 'Vaga em República','preco': '500', 'imagem': 'images/republica.png', 'autor': 'Maria Julia', 'descricao': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eleifend dolor quis mattis pharetra. Nulla feugiat dui vitae ligula porta mattis. Curabitur quis venenatis lectus. Aliquam et auctor odio, vel aliquet justo. Nulla ipsum mi, mollis vitae lacus nec, blandit congue urna. Maecenas tristique sem vel arcu vestibulum, quis efficitur diam sodales. Vestibulum in elementum tellus. Vestibulum rhoncus nibh vel risus aliquet faucibus. Sed at ex eget ipsum placerat commodo. Quisque pulvinar erat sagittis enim egestas sollicitudin. Proin nisi ipsum, scelerisque eu ornare sit amet, efficitur eu dolor. Donec sapien diam, congue nec luctus ut, condimentum at lacus. Cras eget rhoncus nibh. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum facilisis ornare facilisis. Integer et mollis nunc, id fermentum nisi.'},
-  {'titulo': 'Telescópio', 'preco': '500', 'imagem': 'images/background.jpeg', 'autor': 'Daniel', 'descricao': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eleifend dolor quis mattis pharetra. Nulla feugiat dui vitae ligula porta mattis. Curabitur quis venenatis lectus. Aliquam et auctor odio, vel aliquet justo. Nulla ipsum mi, mollis vitae lacus nec, blandit congue urna. Maecenas tristique sem vel arcu vestibulum, quis efficitur diam sodales. Vestibulum in elementum tellus. Vestibulum rhoncus nibh vel risus aliquet faucibus. Sed at ex eget ipsum placerat commodo. Quisque pulvinar erat sagittis enim egestas sollicitudin. Proin nisi ipsum, scelerisque eu ornare sit amet, efficitur eu dolor. Donec sapien diam, congue nec luctus ut, condimentum at lacus. Cras eget rhoncus nibh. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum facilisis ornare facilisis. Integer et mollis nunc, id fermentum nisi.'}];
 
 class Anuff extends StatefulWidget {
   const Anuff({super.key});
@@ -21,35 +11,7 @@ class Anuff extends StatefulWidget {
   State<Anuff> createState() => _AnuffState();
 }
 
-class _AnuffState extends State<Anuff> { 
-  Future<void> _loadAnuncios() async {
-    try {
-      final response = await http.get(Uri.parse('http://seu-backend-url/api/anuncios'));
-
-      if (response.statusCode == 200) {
-        final List<dynamic> fetchedAnuncios = json.decode(response.body);
-
-        setState(() {
-          anuncios = fetchedAnuncios.map((ad) => Map<String, String>.from(ad)).toList();
-        });
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Erro ao carregar os anúncios.')),
-        );
-      }
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Erro de conexão. Tente novamente.')),
-      );
-    }
-  }
-  
-  @override
-  void initState() {
-    super.initState();
-    _loadAnuncios(); // Função que carrega os anúncios do back-end
-  }
-
+class _AnuffState extends State<Anuff> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -86,10 +48,10 @@ class _AnuffState extends State<Anuff> {
                   builder: (context) => CriarAnuncioPage(),
                 ),
               );
-
-              if (anuncioCriado == true) {
-                _loadAnuncios(); // Recarrega os anúncios ao retornar
-              }
+              //logica de atualizacao dos anuncios
+              // if (anuncioCriado == true) {
+              //   _loadAnuncios(); // Recarrega os anúncios ao retornar
+              // }
             },
           ),
           IconButton(
@@ -131,8 +93,12 @@ class Anuncio extends StatefulWidget {
 }
 
 class _AnuncioState extends State<Anuncio> {
-    bool _isOpen = false;
-
+  static List<Map<String, String>> anuncios = [{'titulo': 'Livro', 'preco': '500', 'imagem': 'images/livro.png', 'autor': 'Adriano', 'descricao': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eleifend dolor quis mattis pharetra. Nulla feugiat dui vitae ligula porta mattis. Curabitur quis venenatis lectus. Aliquam et auctor odio, vel aliquet justo. Nulla ipsum mi, mollis vitae lacus nec, blandit congue urna. Maecenas tristique sem vel arcu vestibulum, quis efficitur diam sodales. Vestibulum in elementum tellus. Vestibulum rhoncus nibh vel risus aliquet faucibus. Sed at ex eget ipsum placerat commodo. Quisque pulvinar erat sagittis enim egestas sollicitudin. Proin nisi ipsum, scelerisque eu ornare sit amet, efficitur eu dolor. Donec sapien diam, congue nec luctus ut, condimentum at lacus. Cras eget rhoncus nibh. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum facilisis ornare facilisis. Integer et mollis nunc, id fermentum nisi.'},
+  {'titulo': 'Celular', 'preco': '500', 'imagem': 'images/celular.png', 'autor': 'Arthur', 'descricao': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eleifend dolor quis mattis pharetra. Nulla feugiat dui vitae ligula porta mattis. Curabitur quis venenatis lectus. Aliquam et auctor odio, vel aliquet justo. Nulla ipsum mi, mollis vitae lacus nec, blandit congue urna. Maecenas tristique sem vel arcu vestibulum, quis efficitur diam sodales. Vestibulum in elementum tellus. Vestibulum rhoncus nibh vel risus aliquet faucibus. Sed at ex eget ipsum placerat commodo. Quisque pulvinar erat sagittis enim egestas sollicitudin. Proin nisi ipsum, scelerisque eu ornare sit amet, efficitur eu dolor. Donec sapien diam, congue nec luctus ut, condimentum at lacus. Cras eget rhoncus nibh. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum facilisis ornare facilisis. Integer et mollis nunc, id fermentum nisi.'},
+  {'titulo': 'Aulas de Física', 'preco': '500', 'imagem': 'images/fisica.png', 'autor': 'Andre', 'descricao': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eleifend dolor quis mattis pharetra. Nulla feugiat dui vitae ligula porta mattis. Curabitur quis venenatis lectus. Aliquam et auctor odio, vel aliquet justo. Nulla ipsum mi, mollis vitae lacus nec, blandit congue urna. Maecenas tristique sem vel arcu vestibulum, quis efficitur diam sodales. Vestibulum in elementum tellus. Vestibulum rhoncus nibh vel risus aliquet faucibus. Sed at ex eget ipsum placerat commodo. Quisque pulvinar erat sagittis enim egestas sollicitudin. Proin nisi ipsum, scelerisque eu ornare sit amet, efficitur eu dolor. Donec sapien diam, congue nec luctus ut, condimentum at lacus. Cras eget rhoncus nibh. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum facilisis ornare facilisis. Integer et mollis nunc, id fermentum nisi.'},
+  {'titulo': 'Vaga em República', 'preco': '500', 'imagem': 'images/republica.png', 'autor': 'Maria Julia', 'descricao': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eleifend dolor quis mattis pharetra. Nulla feugiat dui vitae ligula porta mattis. Curabitur quis venenatis lectus. Aliquam et auctor odio, vel aliquet justo. Nulla ipsum mi, mollis vitae lacus nec, blandit congue urna. Maecenas tristique sem vel arcu vestibulum, quis efficitur diam sodales. Vestibulum in elementum tellus. Vestibulum rhoncus nibh vel risus aliquet faucibus. Sed at ex eget ipsum placerat commodo. Quisque pulvinar erat sagittis enim egestas sollicitudin. Proin nisi ipsum, scelerisque eu ornare sit amet, efficitur eu dolor. Donec sapien diam, congue nec luctus ut, condimentum at lacus. Cras eget rhoncus nibh. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum facilisis ornare facilisis. Integer et mollis nunc, id fermentum nisi.'},
+  {'titulo': 'Telescópio', 'preco': '500', 'imagem': 'images/background.jpeg', 'autor': 'Daniel', 'descricao': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eleifend dolor quis mattis pharetra. Nulla feugiat dui vitae ligula porta mattis. Curabitur quis venenatis lectus. Aliquam et auctor odio, vel aliquet justo. Nulla ipsum mi, mollis vitae lacus nec, blandit congue urna. Maecenas tristique sem vel arcu vestibulum, quis efficitur diam sodales. Vestibulum in elementum tellus. Vestibulum rhoncus nibh vel risus aliquet faucibus. Sed at ex eget ipsum placerat commodo. Quisque pulvinar erat sagittis enim egestas sollicitudin. Proin nisi ipsum, scelerisque eu ornare sit amet, efficitur eu dolor. Donec sapien diam, congue nec luctus ut, condimentum at lacus. Cras eget rhoncus nibh. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum facilisis ornare facilisis. Integer et mollis nunc, id fermentum nisi.'}];
+  bool _isOpen = false;
 
 
   @override
@@ -199,24 +165,7 @@ class _AnuncioState extends State<Anuncio> {
                             Text(anuncios[widget.index]['autor']!, style: const TextStyle(fontSize: 16)),
                             IconButton(
                               icon: const Icon(Icons.account_circle),
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => AdvertiserPage(
-                                      info: {
-                                        'autor': anuncios[widget.index]['autor'],
-                                        'fotoPerfil': 'images/celular.png',
-                                        'ocupacao': 'Empresário',
-                                        'reputacao': anuncios[widget.index]['reputacao'],
-                                      },
-                                      anunciosAutor: anuncios
-                                          .where((a) => a['autor'] == anuncios[widget.index]['autor'])
-                                          .toList(),
-                                    ),
-                                  ),
-                                );
-                              },
+                              onPressed: () {},
                             )
                           ],
                         )
