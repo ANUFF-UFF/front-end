@@ -100,151 +100,149 @@ class _AnuncioScreenState extends State<AnuncioScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 16),
-              IntrinsicHeight(
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Flexible(
-                      flex: 1,
-                      child: AspectRatio(
-                        aspectRatio: 1,
-                        child: PageView(
-                          children: [
-                            Container(
-                              margin: const EdgeInsets.all(8.0),
-                              decoration: BoxDecoration(
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Flexible(
+                    flex: 1,
+                    child: AspectRatio(
+                      aspectRatio: 1,
+                      child: PageView(
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.all(8.0),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              image: DecorationImage(
+                                image: AssetImage(widget.info['foto'] ?? 'images/background.jpeg'),
+                                fit: BoxFit.fitHeight,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Flexible(
+                    flex: 1,
+                    child: Container(
+                      padding: const EdgeInsets.all(8.0),
+                      decoration: BoxDecoration(
+                        color: Colors.blue[100],
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                (widget.info['titulo'] ?? 'Sem Titulo'),
+                                style: const TextStyle(
+                                    fontSize: 30, fontWeight: FontWeight.bold),
+                              ),
+                              Row(
+                                children: List.generate(
+                                  5,
+                                  (index) => Icon(
+                                    Icons.star,
+                                    color: widget.info['nota'].round() > index ? Colors.amber : Colors.grey,
+                                    size: 30,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'Preço:',
+                                style: TextStyle(
+                                  fontSize: 24,
+                                ),
+                              ),
+                              Row(
+                                children: [
+                                  const Text(
+                                    'R\$ ',
+                                    style: TextStyle(
+                                      fontSize: 24,
+                                    ),
+                                  ),
+                                  Text(
+                                    (widget.info['preco'].toString()),
+                                    style: const TextStyle(
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.green,
+                                    ),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                          Text(
+                            (widget.info['descricao'] ?? ''),
+                            style: const TextStyle(fontSize: 16),
+                          ),
+                          ElevatedButton.icon(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ChatScreen(chatInfo: widget.info, usuarioLogadoId: widget.usuario['id']),
+                                ),
+                              );
+                            },
+                            icon: const Icon(
+                              Icons.chat,
+                              color: Colors.black,
+                            ),
+                            label: const Text(
+                              'Chat com o Vendedor',
+                              style: TextStyle(color: Colors.black),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.black26,
+                              foregroundColor: Colors.black,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 16, vertical: 12),
+                              shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8),
-                                image: DecorationImage(
-                                  image: AssetImage(widget.info['foto'] ?? 'images/background.jpeg'),
-                                  fit: BoxFit.fitHeight,
+                              ),
+                              shadowColor: Colors.transparent,
+                            ),
+                          ),
+                          ListTile(
+                            leading: const CircleAvatar(
+                              backgroundImage: AssetImage('images/celular.png'),
+                            ),
+                            title: Row(children: [
+                              Text(widget.info['nome_autor'] ?? 'Sem autor'),
+                              const SizedBox(width: 16),
+                              Row(
+                                children: List.generate(
+                                  3,
+                                  (index) => const Icon(
+                                    Icons.star,
+                                    color: Colors.amber,
+                                    size: 16,
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
+                            ]),
+                            subtitle: const Text('Ver perfil'),
+                            onTap: () {},
+                          ),
+                        ],
                       ),
                     ),
-                    const SizedBox(width: 16),
-                    Flexible(
-                      flex: 1,
-                      child: Container(
-                        padding: const EdgeInsets.all(8.0),
-                        decoration: BoxDecoration(
-                          color: Colors.blue[100],
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  (widget.info['titulo'] ?? 'Sem Titulo'),
-                                  style: const TextStyle(
-                                      fontSize: 30, fontWeight: FontWeight.bold),
-                                ),
-                                Row(
-                                  children: List.generate(
-                                    5,
-                                    (index) => Icon(
-                                      Icons.star,
-                                      color: widget.info['nota'].round() > index ? Colors.amber : Colors.grey,
-                                      size: 30,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  'Preço:',
-                                  style: TextStyle(
-                                    fontSize: 24,
-                                  ),
-                                ),
-                                Row(
-                                  children: [
-                                    const Text(
-                                      'R\$ ',
-                                      style: TextStyle(
-                                        fontSize: 24,
-                                      ),
-                                    ),
-                                    Text(
-                                      (widget.info['preco'].toString()),
-                                      style: const TextStyle(
-                                        fontSize: 24,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.green,
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ),
-                            Text(
-                              (widget.info['descricao'] ?? ''),
-                              style: const TextStyle(fontSize: 16),
-                            ),
-                            ElevatedButton.icon(
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ChatScreen(chatInfo: widget.info, usuarioLogadoId: widget.usuario['id']),
-                                  ),
-                                );
-                              },
-                              icon: const Icon(
-                                Icons.chat,
-                                color: Colors.black,
-                              ),
-                              label: const Text(
-                                'Chat com o Vendedor',
-                                style: TextStyle(color: Colors.black),
-                              ),
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.black26,
-                                foregroundColor: Colors.black,
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 16, vertical: 12),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                shadowColor: Colors.transparent,
-                              ),
-                            ),
-                            ListTile(
-                              leading: const CircleAvatar(
-                                backgroundImage: AssetImage('images/celular.png'),
-                              ),
-                              title: Row(children: [
-                                Text(widget.info['nome_autor'] ?? 'Sem autor'),
-                                const SizedBox(width: 16),
-                                Row(
-                                  children: List.generate(
-                                    3,
-                                    (index) => const Icon(
-                                      Icons.star,
-                                      color: Colors.amber,
-                                      size: 16,
-                                    ),
-                                  ),
-                                ),
-                              ]),
-                              subtitle: const Text('Ver perfil'),
-                              onTap: () {},
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
               const SizedBox(height: 16),
               const Divider(),
@@ -253,53 +251,50 @@ class _AnuncioScreenState extends State<AnuncioScreen> {
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
-              SizedBox(
-                height: 100,
-                child: FutureBuilder(
-                  future: getAvaliacao(),
-                  builder: (context, snapshot) {
+              FutureBuilder(
+                future: getAvaliacao(),
+                builder: (context, snapshot) {
 
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return CircularProgressIndicator();
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return CircularProgressIndicator();
 
-                    } else if (snapshot.hasError) {
-                      return Text(snapshot.error.toString());
+                  } else if (snapshot.hasError) {
+                    return Text(snapshot.error.toString());
 
-                    } else if (snapshot.hasData) {
-                      return Expanded(
-                        child: ListView.builder(
-                          itemCount: snapshot.data!.length,
-                          itemBuilder: (context, index) {
-                            return ListTile(
-                              leading: CircleAvatar(
-                                backgroundImage: AssetImage(snapshot.data![index]['foto'] ?? 'images/celular.png'),
-                              ),
-                              title: Text(snapshot.data![index]['nome']),
-                              subtitle: Row(
-                                children: [
-                                  Text(snapshot.data![index]['comentario']),
-                                  Row(
-                                    children: List.generate(
-                                      5,
-                                      (indexS) => Icon(
-                                          Icons.star,
-                                          color: snapshot.data![index]['nota'] >= indexS ? Colors.amber : Colors.grey,
-                                          size: 10
-                                      )
-                                    ),
+                  } else if (snapshot.hasData) {
+                    return Expanded(
+                      child: ListView.builder(
+                        itemCount: snapshot.data!.length,
+                        itemBuilder: (context, index) {
+                          return ListTile(
+                            leading: CircleAvatar(
+                              backgroundImage: AssetImage(snapshot.data![index]['foto'] ?? 'images/celular.png'),
+                            ),
+                            title: Text(snapshot.data![index]['nome']),
+                            subtitle: Row(
+                              children: [
+                                Text(snapshot.data![index]['comentario']),
+                                Row(
+                                  children: List.generate(
+                                    5,
+                                    (indexS) => Icon(
+                                        Icons.star,
+                                        color: snapshot.data![index]['nota'] >= indexS ? Colors.amber : Colors.grey,
+                                        size: 10
+                                    )
                                   ),
-                                ],
-                              ),
-                              onTap: () {},
-                            );
-                          },
-                        ),
-                      );
-                    } else {
-                      return Text('Não há Avaliações');
-                    }
-                  },
-                ),
+                                ),
+                              ],
+                            ),
+                            onTap: () {},
+                          );
+                        },
+                      ),
+                    );
+                  } else {
+                    return Text('Não há Avaliações');
+                  }
+                },
               ),
               const Divider(),
               Row(

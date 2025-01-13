@@ -4,6 +4,11 @@ import 'package:http/http.dart' as http;
 
 
 class CriarAnuncioPage extends StatefulWidget {
+
+  int autor;
+
+  CriarAnuncioPage({required this.autor});
+
   @override
   _CreateAdScreenState createState() => _CreateAdScreenState();
 }
@@ -11,16 +16,14 @@ class CriarAnuncioPage extends StatefulWidget {
 class _CreateAdScreenState extends State<CriarAnuncioPage> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
-  final TextEditingController _authorController = TextEditingController();
   final TextEditingController _imageController = TextEditingController();
 
 void _submitAd() async {
   final String title = _titleController.text;
   final String description = _descriptionController.text;
-  final String author = _authorController.text;
   final String image = _imageController.text;
 
-  if (title.isEmpty || description.isEmpty || author.isEmpty || image.isEmpty ) {
+  if (title.isEmpty || description.isEmpty || image.isEmpty ) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('Por favor, preencha todos os campos e selecione uma imagem.')),
     );
@@ -31,14 +34,14 @@ void _submitAd() async {
   final newAd = {
     'titulo': title,
     'descricao': description,
-    'autor': author,
+    'autor': widget.autor,
     'imagem': image, 
   };
 
   // Enviar para o servidor
   try {
     final response = await http.post(
-      Uri.parse('http://seu-backend-url/api/anuncios'),
+      Uri.parse('http://127.0.0.1:8000/anuncios/'),
       headers: {'Content-Type': 'application/json'},
       body: json.encode(newAd),
     );
@@ -51,7 +54,6 @@ void _submitAd() async {
       // Limpa os campos após enviar
       _titleController.clear();
       _descriptionController.clear();
-      _authorController.clear();
       _imageController.clear();
 
       // Navega de volta à página de anúncios
@@ -104,14 +106,6 @@ void _submitAd() async {
                       border: OutlineInputBorder(),
                     ),
                     maxLines: 4,
-                  ),
-                  SizedBox(height: 32),
-                  TextField(
-                    controller: _authorController,
-                    decoration: InputDecoration(
-                      labelText: 'Autor',
-                      border: OutlineInputBorder(),
-                    ),
                   ),
                   SizedBox(height: 35),
                   TextField(
