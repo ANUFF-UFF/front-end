@@ -1,3 +1,4 @@
+import 'package:demo_es/advertiserPage.dart';
 import 'package:demo_es/perfil.dart';
 import 'package:demo_es/anuncio.dart';
 import 'package:flutter/material.dart';
@@ -148,7 +149,24 @@ class _AnuncioState extends State<Anuncio> {
                             Text(anuncios[widget.index]['autor']!, style: const TextStyle(fontSize: 16)),
                             IconButton(
                               icon: const Icon(Icons.account_circle),
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => AdvertiserPage(
+                                      info: {
+                                        'autor': anuncios[widget.index]['autor'],
+                                        'fotoPerfil': 'images/celular.png',
+                                        'ocupacao': 'Empresário',
+                                        'reputacao': anuncios[widget.index]['reputacao'],
+                                      },
+                                      anunciosAutor: anuncios
+                                          .where((a) => a['autor'] == anuncios[widget.index]['autor'])
+                                          .toList(),
+                                    ),
+                                  ),
+                                );
+                              },
                             )
                           ],
                         )
