@@ -32,7 +32,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
       try {
         final response = await http.post(
-          Uri.parse('http://127.0.0.1:8000/usuarios'),
+          Uri.parse('http://127.0.0.1:8000/usuarios/'),
           headers: {'Content-Type': 'application/json'},
           body: json.encode(data),
         );
@@ -43,18 +43,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
             const SnackBar(content: Text('Cadastro realizado com sucesso!')),
           );
           Navigator.pop(context);
-        } else {
-          // Falha no cadastro
-          setState(() {
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: Text('Erro ao cadastrar, possível usuário já existente'),
-                );
-              },
-            );
-          });
         }
       } catch (e) {
         setState(() {

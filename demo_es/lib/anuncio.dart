@@ -19,11 +19,11 @@ class _AnuncioScreenState extends State<AnuncioScreen> {
 
   Future<List<Map<String, dynamic>>> getAvaliaao() async {
 
-    String url = "http://127.0.0.1:8000/avaliacao/${widget.info['id'].toString()}";
+    String url = "http://127.0.0.1:8000/avaliacao/${widget.info['id'].toString()}/";
     http.Response response = await http.get(Uri.parse(url));
-    List<Map<String, dynamic>> ret = jsonDecode(response.body);
+    List<dynamic> ret = jsonDecode(response.body);
 
-    return ret;
+    return ret as List<Map<String, dynamic>>;
   }
 
   void _addComment() async {
@@ -37,7 +37,7 @@ class _AnuncioScreenState extends State<AnuncioScreen> {
       };
 
       final response = await http.post(
-        Uri.parse('http://127.0.0.1:8000/avaliacao'),
+        Uri.parse('http://127.0.0.1:8000/avaliacao/'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode(data),
       );
