@@ -17,7 +17,7 @@ class _AnuncioScreenState extends State<AnuncioScreen> {
   final TextEditingController _commentController = TextEditingController();
   int avaliacao = 0;
 
-  Future<List<Map<String, dynamic>>> getAvaliaao() async {
+  Future<List<Map<String, dynamic>>> getAvaliacao() async {
 
     String url = "http://127.0.0.1:8000/avaliacao/${widget.info['id'].toString()}/";
     http.Response response = await http.get(Uri.parse(url));
@@ -25,6 +25,15 @@ class _AnuncioScreenState extends State<AnuncioScreen> {
 
     if (jsonList.isNotEmpty) {
       List<Map<String, dynamic>> ret = jsonList.cast<Map<String, dynamic>>();
+
+      
+      for (int index = 0; index < ret.length; index++) {
+        url = "http://127.0.0.1:8000/usuarios/${ret[index]['autor'].toString()}/";
+        response = await http.get(Uri.parse(url));
+        Map<String, dynamic> result = jsonDecode(response.body);
+        ret[index]['nome'] = result['nome'];
+        ret[index]['foto'] = result['foto'];
+      }
 
       return ret;
     } else {
@@ -214,7 +223,7 @@ class _AnuncioScreenState extends State<AnuncioScreen> {
                                 backgroundImage: AssetImage('images/celular.png'),
                               ),
                               title: Row(children: [
-                                Text(widget.info['autor'] ?? 'Sem autor'),
+                                Text(widget.info['nome_autor'] ?? 'Sem autor'),
                                 const SizedBox(width: 16),
                                 Row(
                                   children: List.generate(
@@ -245,7 +254,7 @@ class _AnuncioScreenState extends State<AnuncioScreen> {
               ),
               const SizedBox(height: 8),
               FutureBuilder(
-                future: getAvaliaao(),
+                future: getAvaliacao(),
                 builder: (context, snapshot) {
 
                   if (snapshot.connectionState == ConnectionState.waiting) {

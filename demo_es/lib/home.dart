@@ -180,7 +180,7 @@ class _AnuncioState extends State<Anuncio> {
                         Text('Descrição', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                         Row(
                           children: [
-                            Text(widget.anuncios[widget.index]['autor']!, style: const TextStyle(fontSize: 16)),
+                            Text(widget.anuncios[widget.index]['nome_autor']!, style: const TextStyle(fontSize: 16)),
                             IconButton(
                               icon: const Icon(Icons.account_circle),
                               onPressed: () {},
