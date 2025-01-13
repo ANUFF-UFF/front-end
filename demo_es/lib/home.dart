@@ -1,3 +1,4 @@
+import 'package:demo_es/criarAnuncio.dart';
 import 'package:demo_es/advertiserPage.dart';
 import 'package:demo_es/perfil.dart';
 import 'package:demo_es/anuncio.dart';
@@ -38,6 +39,22 @@ class _AnuffState extends State<Anuff> {
           ),
         ),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.add),
+            iconSize: 40.0,
+            onPressed: () async {
+              final bool anuncioCriado = await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CriarAnuncioPage(),
+                ),
+              );
+              //logica de atualizacao dos anuncios
+              // if (anuncioCriado == true) {
+              //   _loadAnuncios(); // Recarrega os anúncios ao retornar
+              // }
+            },
+          ),
           IconButton(
             padding: EdgeInsets.only(top: 10.0, right: 10.0, bottom: 10.0),
             icon: const Icon(Icons.account_circle),
