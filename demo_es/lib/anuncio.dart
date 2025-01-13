@@ -52,7 +52,7 @@ class _AnuncioScreenState extends State<AnuncioScreen> {
       };
 
       final response = await http.post(
-        Uri.parse('http://127.0.0.1:8000/avaliacao/'),
+        Uri.parse('http://127.0.0.1:8000/avaliacoes/'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode(data),
       );
