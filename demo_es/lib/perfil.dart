@@ -5,6 +5,7 @@ class PerfilPage extends StatelessWidget {
   final Map<String, dynamic> userInfo = {
     'nome': 'Nome do Usuário',
     'email': 'email@usuario.com',
+    'fotoPerfil': 'https://cdn-icons-png.flaticon.com/512/9187/9187604.png',
     'anuncios': [
       'Anúncio 1',
       'Anúncio 2',
