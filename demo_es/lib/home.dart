@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:demo_es/criarAnuncio.dart';
+import 'package:demo_es/advertiserPage.dart';
 import 'package:demo_es/perfil.dart';
 import 'package:demo_es/anuncio.dart';
 import 'package:flutter/material.dart';
@@ -57,6 +59,22 @@ class _AnuffState extends State<Anuff> {
           ),
         ),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.add),
+            iconSize: 40.0,
+            onPressed: () async {
+              final bool anuncioCriado = await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CriarAnuncioPage(),
+                ),
+              );
+              //logica de atualizacao dos anuncios
+              // if (anuncioCriado == true) {
+              //   _loadAnuncios(); // Recarrega os anúncios ao retornar
+              // }
+            },
+          ),
           IconButton(
             padding: EdgeInsets.only(top: 10.0, right: 10.0, bottom: 10.0),
             icon: const Icon(Icons.account_circle),
@@ -183,7 +201,24 @@ class _AnuncioState extends State<Anuncio> {
                             Text(widget.anuncios[widget.index]['nome_autor']!, style: const TextStyle(fontSize: 16)),
                             IconButton(
                               icon: const Icon(Icons.account_circle),
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => AdvertiserPage(
+                                      info: {
+                                        'autor': widget.anuncios[widget.index]['autor'],
+                                        'fotoPerfil': 'images/celular.png',
+                                        'ocupacao': 'Empresário',
+                                        'reputacao': widget.anuncios[widget.index]['reputacao'],
+                                      },
+                                      anunciosAutor: widget.anuncios
+                                          .where((a) => a['autor'] == widget.anuncios[widget.index]['autor'])
+                                          .toList(),
+                                    ),
+                                  ),
+                                );
+                              },
                             )
                           ],
                         )

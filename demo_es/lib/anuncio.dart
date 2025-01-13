@@ -195,7 +195,7 @@ class _AnuncioScreenState extends State<AnuncioScreen> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => ChatScreen(info: widget.info),
+                                    builder: (context) => ChatScreen(chatInfo: widget.info, usuarioLogadoId: widget.usuario['id']),
                                   ),
                                 );
                               },
